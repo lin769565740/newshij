@@ -38,6 +38,61 @@
     </div>
   </div>
 
+  <!-- Modal 弹出框-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">温馨提示</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
+<script>
+  $(function(){
+    $('.input_sub').on('click',function (e) {
+     e.preventDefault();
+     var username = $('.input_txt').val().trim();
+     var password = $('.input_pass').val().trim();
+     if (username == "" || password == "") {
+       //弹出的模态框
+      $('#myModal').modal();
+      $('.modal-body').text('账号和密码不能为空')
+       return;
+     }
+     $.ajax({
+       type:'post',
+       url:'http://localhost:8080/api/v1/admin/user/login',
+       data:{
+        username:username,
+        password:password
+       },
+       success:function(backdata){
+         console.log(backdata);
+         if (backdata.code ==200) {
+          $('#myModal').modal();
+          $('.modal-body').text('登录成功')
+          $('#myModal').on('hidden.bs.modal', function (e) {
+            //保存令牌，本地保存
+            localStorage.setItem('token',backdata.token);
+            window.location.href = './index.html';
+        })}else{
+          $('#myModal').modal();
+          $('.modal-body').text('账号和密码不能为空')
+         }
+       }
+     })
+    })
+  })
+</script>
 
 </html>
