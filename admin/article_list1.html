@@ -73,5 +73,24 @@
         </div>
     </div>
 </body>
+<script src="./libs/http.js"> </script>
+<script>
+   $(function(){
+          getdata();
+          function getdata() {;
+          $.ajax({
+              type:'get',
+              url:BigNew.category_list,
+              success:function(backdata){
+                  console.log(backdata);
+                //   if (backdata.code == 200) {
+                //       var res = template('temp',backdata);
+                //       $('tbody').html(res);
+                //   }
+              }
+          });
+        }
+    })
+</script>
 
 </html>
